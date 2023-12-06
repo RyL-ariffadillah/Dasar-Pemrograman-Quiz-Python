@@ -1,0 +1,166 @@
+import random
+import string
+import datetime
+
+def shuffle_questions(soal):
+    random.shuffle(soal)
+
+def premium(question_data, question_number, answer):
+    print(f'\n{question_number}. {question_data["question"]}')
+    for option in question_data["options"]:
+        print(f'   {option}')
+    print("Jawaban kamu :", answer)
+    print("Jawaban benar:", question_data["answer"])
+
+#-----DAFTAR DAN LOGIN AKUN
+print("|================================================|")
+print("|Silahkan registrasi akun sebelum memainkan Quiz |")
+print("|================================================|")
+
+username_reg = input("Buat username baru Anda : ")
+password_reg = input("Buat password baru Anda : ")
+while True:
+    if username_reg != "" and password_reg != "":
+        break
+    else:
+        print("username dan password tidak bisa kosong,mohon buat username dan pasword anda dengan mengisi angka atau huruf.")
+        username_reg = input("Buat username baru Anda : ")
+        password_reg = input("Buat password baru Anda : ")
+
+print("\n---------- REGISTRASI AKUN SELESAI ----------")
+print("Silahkan login untuk melanjutkan.")
+
+while True:
+    username_log = input("Masukkan username Anda : ")
+    password_log = input("Masukkan password : ")
+    
+    if username_log == username_reg and password_log == password_reg:
+        print("\n-------------- Login berhasil! --------------")
+        break
+    else:
+        print("Akun tidak valid, silahkan masukkan username dan password yang benar.")
+
+#-----TANYA USER APAKAH MAU BERMAIN
+playing = input('Apakah anda ingin bermain? (iya atau tidak) : ').lower()
+print("\n")
+if playing == 'iya':
+    #-----HEADER
+    print(f"{'Selamat Datang Dipermainan Kuiz !!':>80}")
+    print(f"{'==================================================':>87}")
+    print('NOTE: Kamu hanya perlu menjawab dengan ABJAD-nya saja (a/b/c/d)')
+
+    bermain_lagi = 'iya'
+    is_premium = False
+
+    while bermain_lagi == 'iya':
+        questions = [
+            {"question": "what does CPU stand for?", "options": ["A. central processing unit", "B. central prosedur unit", "C. celebration product ultimate", "D. central product unit"], "answer": "a"},
+            {"question": "what does GPU stand for?", "options": ["A. group processing unit", "B. geographic procedur unit", "C. graphics processing unit", "D. general purpose unit"], "answer": "c"},
+            {"question": "what does RAM stand for?", "options": ["A. random access memory", "B. rotation access memory", "C. repeat access memory", "D. random application memory"], "answer": "a"},
+            {"question": "what does PSU stand for?", "options": ["A. pixel scanner unit", "B. power scanner unit", "C. program scanner unit", "D. power supply unit"], "answer": "d"},
+            {"question": "what does ROM stand for?", "options": ["A. random operating memory", "B. read only memory", "C. random only memory", "D. read operating media"], "answer": "b"}
+        ]
+
+        shuffle_questions(questions)
+
+        score = 0
+        question_no = 0
+
+        for question_data in questions:
+            question_no += 1
+            print(f'\n{question_no}. {question_data["question"]}')
+            for option in question_data["options"]:
+                print(f'   {option}')
+            answer = input("Jawaban: ").lower()
+
+            while answer not in ['a', 'b', 'c', 'd']:
+                print('Jawaban tidak valid. Silakan masukkan jawaban sesuai rulenya.')
+                answer = input("Jawaban: ").lower()
+
+            if answer == question_data["answer"]:
+                score += 1
+
+        print(f'\nbanyak pertanyaan: {question_no}')
+        print(f'jumlah jawaban benar: {score}')
+
+        try:
+            percentage = (score * 100) / question_no
+        except ZeroDivisionError:
+            print('0% Pertanyaan yang benar yang benar')
+        print(f'{percentage}% Pertanyaan yang benar.\n')
+
+        def generate_transaction_id():
+            return ''.join(random.choice(string.digits) for _ in range(8))
+
+        if not is_premium:
+            print("Jika ingin melihat kunci jawaban, anda harus upgrade akun ke premium")
+            upgrade_akun = input("Apakah Anda ingin mengupgrade ke akun premium? (iya/tidak) : ").lower()
+            if upgrade_akun == "iya":
+                price = 35000
+                print("\nsilahkan selesaikan pembayaran sejumlah Rp", price, "untuk mengupgrade akun anda ke akun premium.")
+                confirm_upgrade = input("Anda yakin ingin mengupgrade akun ke premium? (yakin/tidak): ").lower()
+                if confirm_upgrade == "yakin":
+                    
+                    cara_pembayaran = input("masukan metode pembayaran (BRI,BCA,OVO,GOPAY,MANDIRI): ").upper()
+                    while cara_pembayaran not in ['BRI', 'BCA', 'OVO', 'GOPAY', 'MANDIRI']:
+                        print("cara pembayaran yang anda pilih tidak tersedia, silahkan pilih cara pembayaran yang sesuai ")
+                        cara_pembayaran = input("masukan metode pembayaran (BRI,BCA,OVO,GOPAY,MANDIRI) : ").upper()
+                    nominal = int(input("masukan jumlah nominal yang telah ditentukan: "))
+                    if cara_pembayaran == "BRI":
+                        kode="B2I"
+                    elif cara_pembayaran == "BCA":
+                        kode="BC4"
+                    elif cara_pembayaran == "OVO":
+                        kode="VO9"
+                    elif cara_pembayaran == "GOPAY":
+                        kode="GP0"
+                    else:
+                        kode="MDI"
+                    if nominal >= price:
+                        transaction_id = generate_transaction_id()
+                        tanggal_transaksi = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        status_pembayaran = "Berhasil"
+
+                        print("\nPEMBAYARAN BERHASIL")
+                        print("=" * 58)
+                        print(f"{'BUKTI PEMBAYARAN':>40}")
+                        print("=" * 58)
+                        print("ID Transaksi     :                   ", kode + transaction_id)
+                        print("Tanggal Transaksi:                   ", tanggal_transaksi)
+                        print("Cara Pembayaran  :                   ", cara_pembayaran)
+                        print("Jumlah Pembayaran:                   ", nominal)
+                        print("Status Pembayaran:                   ", status_pembayaran)
+                        print("=" * 58)
+                        print("")
+                        check_kunci = input("Anda ingin melihat kunci jawaban? (iya/tidak) : ").lower()
+                        if check_kunci == "iya":
+                            for question_data, question_number in zip(questions, range(1, len(questions) + 1)):
+                                premium(question_data, question_number, answer)
+                        else:
+                            print("Terima kasih telah bermain Kuiz pengetahuan dasar komputer")
+                        
+                        is_premium = True 
+                        bermain_lagi = input("Apakah Anda ingin bermain lagi? (iya/tidak): ").lower()
+                    else:
+                        print("Pembayaran gagal. Nominal pembayaran kurang dari harga yang ditentukan.")
+                        bermain_lagi = input("Apakah Anda ingin bermain lagi? (iya/tidak) : ").lower()
+                else:
+                    print("Baiklah, mungkin lain kali.")
+                    bermain_lagi = input("Apakah Anda ingin bermain lagi? (iya/tidak) : ").lower()
+            else:
+                print("----- Baiklah mungkin dilain kesempatan :')")
+                bermain_lagi = input("Apakah Anda ingin bermain lagi? (iya/tidak) : ").lower()
+        else:
+            print("Anda sudah memiliki akun premium.")
+            check_kunci = input("Anda ingin melihat kunci jawaban? (iya/tidak) : ").lower()
+            if check_kunci == "iya":
+                for question_data, question_number in zip(questions, range(1, len(questions) + 1)):
+                    premium(question_data, question_number, answer)
+            else:
+                print("----- Baiklah jika Anda tidak ingin melihat kunci jawaban.")
+            bermain_lagi = input("Apakah Anda ingin bermain lagi? (iya/tidak) : ").lower()
+            
+    else:
+        print('Tidak apa-apa, mungkin lain kali.')
+else:
+    print('Terima Kasih telah menggunakan aplikasi ini.')
